@@ -49,7 +49,7 @@ MergeXlsx_df = sort_df[["Final_Name", "Item", "Units","Unit Cost","Years"]].merg
 print("--------1.1. Total sales per year-----------")
 derive = (MergeXlsx_df.Years != MergeXlsx_df.Years.shift()).cumsum()
 GroupByYears = MergeXlsx_df.groupby(['Years',derive], as_index=False, sort=False)['Units'].sum()
-head = ["Year", "Units"]
+head = ["Sr.No", "Year", "Units"]
 print(tabulate(GroupByYears, headers=head, tablefmt="grid"))
 print("")
 
@@ -57,7 +57,7 @@ print("--------1.2. Total sales by gender-----------")
 sort_Gender_df=MergeXlsx_df.sort_values('Gender')
 derive_gender = (sort_Gender_df.Gender != sort_Gender_df.Gender.shift()).cumsum()
 GroupByGender = sort_Gender_df.groupby(['Gender',derive_gender], as_index=False, sort=False)['Units'].sum()
-head = ["Gender", "Units"]
+head = ["Sr.No", "Gender", "Units"]
 print(tabulate(GroupByGender, headers=head, tablefmt="grid"))
 print("")
 
@@ -65,7 +65,7 @@ print("--------1.3. Total sales by customer-----------")
 sort_Name_df=MergeXlsx_df.sort_values('Final_Name')
 derive_name = (sort_Name_df.Final_Name != sort_Name_df.Final_Name.shift()).cumsum()
 GroupByName = sort_Name_df.groupby(['Final_Name',derive_name], as_index=False, sort=False)['Units'].sum()
-head = ["Name", "Units"]
+head = ["Sr.No", "Name", "Units"]
 print(tabulate(GroupByName, headers=head, tablefmt="grid"))
 print("")
 
@@ -87,7 +87,7 @@ sort_Agegroup_df=MergeXlsx_df.sort_values('AgeGroup')
 derive_agegroup = (sort_Agegroup_df.AgeGroup != sort_Agegroup_df.AgeGroup.shift()).cumsum()
 GroupByAgeGroup = sort_Agegroup_df.groupby(['AgeGroup',derive_agegroup], as_index=False, sort=False)['Units'].sum()
 GroupByTable = GroupByAgeGroup[(GroupByAgeGroup[['Units']] != 0).all(axis=1)]
-head = ["Age Group", "Units"]
+head = ["Sr.No", "Age Group", "Units"]
 print(tabulate(GroupByTable, headers=head, tablefmt="grid"))
 print("")
 
@@ -101,20 +101,19 @@ for row in range(0, len(sort_Item_Unit_df)):
 for items in unique_item_list:
     print("Top 2 customber for -> ", items)
     split_by_users_table=(sort_Item_Unit_df[sort_Item_Unit_df.Item == items]).head(2)
-    head = ["Name", "Item", "Units", "Unit Cost", "Years", "Age", "Gender"]
+    head = ["Sr.No","Name", "Item", "Units", "Unit Cost", "Years", "Age", "Gender","AgeGroup"]
     print(tabulate(split_by_users_table, headers=head, tablefmt="grid"))
     print(" ")
 
 print("")
 
-"""
 order_date = GroupByYears['Years'].tolist()
 order_units = GroupByYears['Units'].tolist()
 
 plt.title('Units by year')
-plt.plot(order_date, order_units, label = 'YearWise Unit purches')
+plt.bar(order_date, order_units, label = 'YearWise Unit purches',color="violet")
 plt.xlabel('Year Basis')
 plt.ylabel('Units Purches')
 plt.xticks(order_date)
-plt.yticks([1000,1100,1200,1300])
-plt.show()"""
+plt.yticks([100,150,250,500,750,1000,1300])
+plt.show()
