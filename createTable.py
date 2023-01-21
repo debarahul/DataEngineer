@@ -34,10 +34,8 @@ for row in range(0, len(Sheet2_df)):
 sort_df=Sheet1_df.sort_values('Order Date')
 for row in range(0, len(sort_df)):
     NameList=(sort_df.iat[row, index_Name]).split()
-    #print(NameList)
     NameList[0], NameList[-1] = NameList[-1], NameList[0]
     NameListToStr = ' '.join([str(elem) for elem in NameList])
-    #print(NameListToStr)
     sort_df.iat[row, index_FinalName_sh1] = NameListToStr
 
     Date_Pattern = r'([0-9]{4})'
@@ -51,14 +49,12 @@ MergeXlsx_df = sort_df[["Final_Name", "Item", "Units","Unit Cost","Years"]].merg
 print("--------1.1. Total sales per year-----------")
 derive = (MergeXlsx_df.Years != MergeXlsx_df.Years.shift()).cumsum()
 GroupByYears = MergeXlsx_df.groupby(['Years',derive], as_index=False, sort=False)['Units'].sum()
-#print(GroupByYears)
 head = ["Year", "Units"]
 print(tabulate(GroupByYears, headers=head, tablefmt="grid"))
 print("")
 
 print("--------1.2. Total sales by gender-----------")
 sort_Gender_df=MergeXlsx_df.sort_values('Gender')
-#print(sort_Gender_df)
 derive_gender = (sort_Gender_df.Gender != sort_Gender_df.Gender.shift()).cumsum()
 GroupByGender = sort_Gender_df.groupby(['Gender',derive_gender], as_index=False, sort=False)['Units'].sum()
 head = ["Gender", "Units"]
@@ -67,7 +63,6 @@ print("")
 
 print("--------1.3. Total sales by customer-----------")
 sort_Name_df=MergeXlsx_df.sort_values('Final_Name')
-print(sort_Name_df)
 derive_name = (sort_Name_df.Final_Name != sort_Name_df.Final_Name.shift()).cumsum()
 GroupByName = sort_Name_df.groupby(['Final_Name',derive_name], as_index=False, sort=False)['Units'].sum()
 head = ["Name", "Units"]
@@ -76,10 +71,8 @@ print("")
 
 print("--------1.4. Most bought item by customer - if multiple, consider any one item only-----------")
 MostBroughtItem = MergeXlsx_df.value_counts('Item')
-#print(MostBroughtItem)
 MaxNum = MostBroughtItem.max()
 extract_index=MostBroughtItem.index.tolist()[0]
-#print(extract_index)
 MostBroughtTable = PrettyTable(["Items", "Sale Count"])
 MostBroughtTable.add_row([extract_index,MaxNum])
 print(MostBroughtTable)
