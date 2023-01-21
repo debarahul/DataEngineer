@@ -47,9 +47,31 @@ for row in range(0, len(sort_df)):
 MergeXlsx_df = sort_df[["Final_Name", "Item", "Units","Unit Cost","Years"]].merge(Sheet2_df[["Final_Name", "AGE","Gender"]], on = "Final_Name", how = "left")
 #print(MergeXlsx_df)
 
+print("--------1.1. Total sales per year-----------")
 derive = (MergeXlsx_df.Years != MergeXlsx_df.Years.shift()).cumsum()
 GroupByYears = MergeXlsx_df.groupby(['Years',derive], as_index=False, sort=False)['Units'].sum()
-print(GroupByYears)
+#print(GroupByYears)
+head = ["Year", "Units"]
+print(tabulate(GroupByYears, headers=head, tablefmt="grid"))
+print("")
+
+print("--------1.2. Total sales by gender-----------")
+sort_Gender_df=MergeXlsx_df.sort_values('Gender')
+#print(sort_Gender_df)
+derive_gender = (sort_Gender_df.Gender != sort_Gender_df.Gender.shift()).cumsum()
+GroupByGender = sort_Gender_df.groupby(['Gender',derive_gender], as_index=False, sort=False)['Units'].sum()
+head = ["Gender", "Units"]
+print(tabulate(GroupByGender, headers=head, tablefmt="grid"))
+print("")
+
+print("--------1.3. Total sales by customer-----------")
+sort_Name_df=MergeXlsx_df.sort_values('Final_Name')
+#print(sort_Name_df)
+derive_name = (sort_Name_df.Final_Name != sort_Name_df.Final_Name.shift()).cumsum()
+GroupByName = sort_Name_df.groupby(['Final_Name',derive_name], as_index=False, sort=False)['Units'].sum()
+head = ["Name", "Units"]
+print(tabulate(GroupByName, headers=head, tablefmt="grid"))
+print("")
 
 """"
 order_date = GroupByYears['Years'].tolist()
