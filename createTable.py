@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+from prettytable import PrettyTable
 
 Sheet1_df = pd.read_excel('Assignment v2 - Data Engineer.xlsx', sheet_name='Sales Data')
 Sheet2_df = pd.read_excel('Assignment v2 - Data Engineer.xlsx', sheet_name='Customer Details')
@@ -66,11 +67,38 @@ print("")
 
 print("--------1.3. Total sales by customer-----------")
 sort_Name_df=MergeXlsx_df.sort_values('Final_Name')
-#print(sort_Name_df)
+print(sort_Name_df)
 derive_name = (sort_Name_df.Final_Name != sort_Name_df.Final_Name.shift()).cumsum()
 GroupByName = sort_Name_df.groupby(['Final_Name',derive_name], as_index=False, sort=False)['Units'].sum()
 head = ["Name", "Units"]
 print(tabulate(GroupByName, headers=head, tablefmt="grid"))
+print("")
+
+print("--------1.4. Most bought item by customer - if multiple, consider any one item only-----------")
+MostBroughtItem = MergeXlsx_df.value_counts('Item')
+#print(MostBroughtItem)
+MaxNum = MostBroughtItem.max()
+extract_index=MostBroughtItem.index.tolist()[0]
+#print(extract_index)
+MostBroughtTable = PrettyTable(["Items", "Sale Count"])
+MostBroughtTable.add_row([extract_index,MaxNum])
+print(MostBroughtTable)
+print("")
+
+print("--------1.5. Create age bins/groups of your choice and calculate the total sales per bin/group-----------")
+bins= [20,35,50,110]
+labels = ['Young', 'Adult', 'Old']
+MergeXlsx_df['AgeGroup'] = pd.cut(MergeXlsx_df['AGE'], bins=bins, labels=labels, right=False)
+sort_Agegroup_df=MergeXlsx_df.sort_values('AgeGroup')
+derive_agegroup = (sort_Agegroup_df.AgeGroup != sort_Agegroup_df.AgeGroup.shift()).cumsum()
+GroupByAgeGroup = sort_Agegroup_df.groupby(['AgeGroup',derive_agegroup], as_index=False, sort=False)['Units'].sum()
+GroupByTable = GroupByAgeGroup[(GroupByAgeGroup[['Units']] != 0).all(axis=1)]
+head = ["Age Group", "Units"]
+print(tabulate(GroupByTable, headers=head, tablefmt="grid"))
+print("")
+
+print("--------1.7. Top 2 customers per each item if available-----------")
+
 print("")
 
 """"
