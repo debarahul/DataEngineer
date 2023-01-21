@@ -81,6 +81,7 @@ print("")
 print("--------1.5. Create age bins/groups of your choice and calculate the total sales per bin/group-----------")
 bins= [20,35,50,110]
 labels = ['Young', 'Adult', 'Old']
+print("For this question used bins is --> ", bins)
 MergeXlsx_df['AgeGroup'] = pd.cut(MergeXlsx_df['AGE'], bins=bins, labels=labels, right=False)
 sort_Agegroup_df=MergeXlsx_df.sort_values('AgeGroup')
 derive_agegroup = (sort_Agegroup_df.AgeGroup != sort_Agegroup_df.AgeGroup.shift()).cumsum()
@@ -91,10 +92,22 @@ print(tabulate(GroupByTable, headers=head, tablefmt="grid"))
 print("")
 
 print("--------1.7. Top 2 customers per each item if available-----------")
+unique_item_list=[]
+sort_Item_Unit_df=MergeXlsx_df.sort_values(by=['Item','Units'],ascending=[True, False])
+for row in range(0, len(sort_Item_Unit_df)):
+    item_list = sort_Item_Unit_df['Item'].iloc[row]
+    if item_list not in unique_item_list:
+        unique_item_list.append(item_list)
+for items in unique_item_list:
+    print("Top 2 customber for -> ", items)
+    split_by_users_table=(sort_Item_Unit_df[sort_Item_Unit_df.Item == items]).head(2)
+    head = ["Name", "Item", "Units", "Unit Cost", "Years", "Age", "Gender"]
+    print(tabulate(split_by_users_table, headers=head, tablefmt="grid"))
+    print(" ")
 
 print("")
 
-""""
+"""
 order_date = GroupByYears['Years'].tolist()
 order_units = GroupByYears['Units'].tolist()
 
