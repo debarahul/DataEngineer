@@ -8,19 +8,21 @@ print("--------1.1. Total sales per year-----------")
 GroupByYears = deriveSheetByGroup(MergeXlsx_df, 'Years', 'Units')
 head = ["Sr.No", "Year", "Units"]
 print(createTable_tab(GroupByYears,head))
-plotGraph(GroupByYears, 'Years', 'Units')
+plotGraph(GroupByYears, 'Years', 'Units', 'Sales Per Year','red')
 print("")
 
 print("--------1.2. Total sales by gender-----------")
 GroupByGender = deriveSheetByGroup(MergeXlsx_df, 'Gender', 'Units')
 head = ["Sr.No", "Gender", "Units"]
 print(createTable_tab(GroupByGender,head))
+plotGraph(GroupByGender, 'Gender', 'Units', 'Sales By Gender','violet')
 print("")
 
 print("--------1.3. Total sales by customer-----------")
 GroupByName = deriveSheetByGroup(MergeXlsx_df, 'Final_Name', 'Units')
 head = ["Sr.No", "Name", "Units"]
 print(createTable_tab(GroupByName,head))
+plotGraph(GroupByName, 'Final_Name', 'Units', 'Sales By Customer','yellow')
 print("")
 
 print("--------1.4. Most bought item by customer - if multiple, consider any one item only-----------")
@@ -40,6 +42,7 @@ GroupByAgeGroup = deriveSheetByGroup(ageGroup_df, 'AgeGroup', 'Units')
 GroupByTable = GroupByAgeGroup[(GroupByAgeGroup[['Units']] != 0).all(axis=1)]
 head = ["Sr.No", "Age Group", "Units"]
 print(createTable_tab(GroupByTable,head))
+plotGraph(GroupByTable, 'AgeGroup', 'Units', 'Sales By Age Group','blue')
 print("")
 
 print("--------1.7. Top 2 customers per each item if available-----------")
