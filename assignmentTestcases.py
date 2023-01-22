@@ -2,6 +2,7 @@ from createTable import createTable_tab, createTablePretty_tab
 from xlsxSheet_refactor import mergeXlsxSheet, deriveSheetByGroup, addAgeGroup
 from plotTable import plotGraph
 
+
 MergeXlsx_df = mergeXlsxSheet()
 
 print("--------1.1. Total sales per year-----------")
