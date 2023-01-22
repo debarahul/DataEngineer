@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt
 from createTable import createTable_tab, createTablePretty_tab
 from xlsxSheet_refactor import mergeXlsxSheet, deriveSheetByGroup, addAgeGroup
+from plotTable import plotGraph
 
 MergeXlsx_df = mergeXlsxSheet()
 
@@ -8,6 +8,7 @@ print("--------1.1. Total sales per year-----------")
 GroupByYears = deriveSheetByGroup(MergeXlsx_df, 'Years', 'Units')
 head = ["Sr.No", "Year", "Units"]
 print(createTable_tab(GroupByYears,head))
+plotGraph(GroupByYears, 'Years', 'Units')
 print("")
 
 print("--------1.2. Total sales by gender-----------")
@@ -55,15 +56,3 @@ for items in unique_item_list:
     print(createTable_tab(topUsersByitem_table,head))
     print(" ")
 
-print("")
-
-order_date = GroupByYears['Years'].tolist()
-order_units = GroupByYears['Units'].tolist()
-
-plt.title('Units by year')
-plt.bar(order_date, order_units, label = 'YearWise Unit purches',color="violet")
-plt.xlabel('Year Basis')
-plt.ylabel('Units Purches')
-plt.xticks(order_date)
-plt.yticks([100,150,250,500,750,1000,1300])
-plt.show()
